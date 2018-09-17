@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Surf Tracking</string>
+    <string name="action_settings">Settings</string>
+    <string name="sessions_file">Fichier des sessions</string>
+    <string name="section0">Top</string>
+    <string name="section1">Sessions</string>
+    <string name="section2">Gallerie</string>
+    <string name="section3">Stats</string>
+    <string name="tideLow">Basse</string>
+    <string name="tideHalf">Mi</string>
+    <string name="tideHigh">Haute</string>
+    <string name="meilleur_session">Meilleur session</string>
+    <string name="meilleur_mois">Meilleur mois: </string>
+    <string name="plus_grosse_houle">Plus grosse houle</string>
+    <string name="record_de_prises">Record de prises</string>
+    <string name="session">session</string>
+    <string name="detail">detail</string>
+    <string name="height">-</string>s
+    <string name="score">*</string>
+    <string name="play">\></string>
+    <string name="thumbnail">thumbnail</string>
+</resources>

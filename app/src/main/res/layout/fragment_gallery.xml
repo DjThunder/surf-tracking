@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.b3dgs.surftracking.MainActivity$PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/detail_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorMonth"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:paddingEnd="1dp"
+        android:paddingStart="0dp">
+
+        <LinearLayout
+            android:id="@+id/months"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <GridView
+        android:id="@+id/detailarea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="1dp"
+        android:background="@color/colorGrey"
+        android:numColumns="6"/>
+
+</LinearLayout>

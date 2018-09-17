@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.b3dgs.surftracking.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="match_parent"
+                                     android:background="@color/colorGrey"
+                                     android:orientation="vertical"
+                                     android:paddingEnd="0dp"
+                                     android:paddingStart="1dp"
+                                     android:paddingTop="1dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/thumbnail"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:id="@+id/play"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:background="@android:drawable/ic_media_play"
+            android:contentDescription="@string/play"/>
+
+    </FrameLayout>
+
+</com.b3dgs.surftracking.SquareLayout>
