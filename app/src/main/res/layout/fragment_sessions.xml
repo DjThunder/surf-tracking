@@ -4,7 +4,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            tools:context="com.b3dgs.surftracking.MainActivity$PlaceholderFragment">
+            tools:context="com.b3dgs.surftracking.SectionFragment">
 
     <LinearLayout
         android:id="@+id/months"
