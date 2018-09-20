@@ -7,3 +7,5 @@ Simple application to display surf sessions ordered by year / month / day inside
 Sessions details can be added by providing an XML data set to specify surf conditions, such as wave height, tides, score...
 
 Icons from : https://icones8.fr/
+
+![surftracking](http://www.b3dgs.com/v7/projects/surf_tracking/surf_tracking1.jpg) ![surftracking](http://www.b3dgs.com/v7/projects/surf_tracking/surf_tracking2.jpg)
