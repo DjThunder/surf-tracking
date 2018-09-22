@@ -29,10 +29,10 @@ import com.bumptech.glide.Glide;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableSet;
 import java.util.Optional;
 
 /**
@@ -82,7 +82,7 @@ final class CalendarAdapter extends BaseAdapter
      *
      * @param sessions The sessions set.
      */
-    public void setSessions(NavigableSet<String> sessions)
+    public void setSessions(Collection<String> sessions)
     {
         sessionsName.clear();
         sessionsDate.clear();
@@ -106,7 +106,7 @@ final class CalendarAdapter extends BaseAdapter
             day = day.substring(0, day.indexOf('-'));
 
             multipleSessionSameDay.computeIfAbsent(day, d -> new ArrayList<>()).add(session);
-            multipleSessionsSameDayCount.put(day, 0);
+            multipleSessionsSameDayCount.put(day, 1);
             sessionsDate.add(session.substring(0, session.lastIndexOf('-')));
         }
         else // Date with two chars
@@ -214,9 +214,9 @@ final class CalendarAdapter extends BaseAdapter
             final List<String> multiDays = multipleSessionSameDay.get(day);
             final String sessionMultiDay = multiDays.get(multipleSessionsSameDayCount.get(day));
             final int id;
-            if (multipleSessionsSameDayCount.get(day) < multiDays.size() - 1)
+            if (multipleSessionsSameDayCount.get(day) > 0)
             {
-                id = multipleSessionsSameDayCount.get(day) + 1;
+                id = multipleSessionsSameDayCount.get(day) - 1;
             }
             else
             {

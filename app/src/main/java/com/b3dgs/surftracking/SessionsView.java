@@ -64,7 +64,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
 {
     private final Collection<SessionSelectionListener> listeners = new ArrayList<>();
     private final Map<String, SessionData> sessionsData = new HashMap<>();
-    private final Map<String, Integer> multiDetail = new HashMap<>();
+    private final Map<String, Boolean> multiDetail = new HashMap<>();
     private final Map<String, Integer> multiDetailAdded = new HashMap<>();
     private final Consumer<Integer> tabChanger;
     private final ArrayList<String> detailItems;
@@ -173,7 +173,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
                 {
                     final String year = yearsNode.getNodeName().replace("_", "");
 
-                    NavigableSet<String> sessions = new TreeSet<>();
+                    Collection<String> sessions = new TreeSet<>();
                     String lastMonth = null;
                     final NodeList sessionsNode = yearsNode.getChildNodes();
                     final int sessionsNumber = sessionsNode.getLength();
@@ -189,21 +189,22 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
                             final SessionData data = new SessionData((Element) sessionNode);
                             if (multiDetail.containsKey(sessionName)) // Detected as multi session a day
                             {
-                                if (multiDetail.get(sessionName) == 0) // First multi session
+                                if (!multiDetail.get(sessionName)) // First multi session
                                 {
-                                    sessionsData.put(sessionName + "-1", sessionsData.get(sessionName));
+                                    final String sessionMultiName = sessionName + "-2";
+                                    sessionsData.put(sessionMultiName, sessionsData.get(sessionName));
                                     sessionsData.remove(sessionName);
-                                    multiDetail.put(sessionName, 1);
-                                    sessions.add(sessionName + "-1");
+                                    multiDetail.put(sessionName, true);
+                                    sessions.add(sessionMultiName);
                                     sessions.remove(sessionName);
                                 }
-                                if (multiDetailAdded.containsKey(sessionName)) // Next multi session count increase
+                                if (multiDetailAdded.containsKey(sessionName)) // Next multi session count decrease
                                 {
-                                    multiDetailAdded.put(sessionName, multiDetailAdded.get(sessionName) + 1);
+                                    multiDetailAdded.put(sessionName, multiDetailAdded.get(sessionName) - 1);
                                 }
                                 else
                                 {
-                                    multiDetailAdded.put(sessionName, 2);
+                                    multiDetailAdded.put(sessionName, 1);
                                 }
 
                                 final String sessionMultiName = sessionName + "-" + multiDetailAdded.get(sessionName);
@@ -217,7 +218,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
                             else // Single session
                             {
                                 sessionsData.put(sessionName, data);
-                                multiDetail.put(sessionName, 0);
+                                multiDetail.put(sessionName, false);
                                 if (lastMonth == null || month.equals(lastMonth))
                                 {
                                     sessions.add(sessionName);
@@ -233,7 +234,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
                                 lastMonth = month;
 
                                 sessionsData.put(sessionName, data);
-                                multiDetail.put(sessionName, 0);
+                                multiDetail.put(sessionName, false);
                                 sessions.add(sessionName);
                             }
                             if (lastMonth == null)
@@ -257,7 +258,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
 
     private void createMonth(String year,
                              String month,
-                             NavigableSet<String> sessions,
+                             Collection<String> sessions,
                              LayoutInflater inflater,
                              ArrayList<View> monthsView)
     {
@@ -305,7 +306,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
      * @param month The month calendar.
      * @return The created month view.
      */
-    private View createMonth(NavigableSet<String> sessions, LayoutInflater inflater, Calendar month)
+    private View createMonth(Collection<String> sessions, LayoutInflater inflater, Calendar month)
     {
         final Context context = inflater.getContext();
         final CalendarAdapter adapter = new CalendarAdapter(context, month, sessionsFolder, this::getInfo);
