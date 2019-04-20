@@ -104,7 +104,7 @@ final class CalendarAdapter extends BaseAdapter
             day = day.substring(0, day.indexOf('-'));
 
             multipleSessionSameDay.computeIfAbsent(day, d -> new ArrayList<>()).add(session);
-            multipleSessionsSameDayCount.put(day, 0);
+            multipleSessionsSameDayCount.put(day, 1);
             sessionsDate.add(session.substring(0, session.lastIndexOf('-')));
         }
         else // Date with two chars
