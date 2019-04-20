@@ -102,7 +102,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
      *
      * @param listener The listener to add.
      */
-    public void addListener(SessionSelectionListener listener)
+    void addListener(SessionSelectionListener listener)
     {
         listeners.add(listener);
     }
@@ -114,7 +114,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
      * @param container The container reference.
      * @return The created view.
      */
-    public View create(LayoutInflater inflater, ViewGroup container)
+    View create(LayoutInflater inflater, ViewGroup container)
     {
         if (rootView != null)
         {
@@ -143,13 +143,16 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
         for (final String year : sessions.descendingKeySet())
         {
             final NavigableMap<String, NavigableSet<String>> months = sessions.get(year);
-            for (final String month : months.descendingKeySet())
+            if (months != null)
             {
-                final Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.YEAR, Integer.parseInt(year));
-                calendar.set(Calendar.MONTH, Integer.parseInt(month) - 1);
+                for (final String month : months.descendingKeySet())
+                {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.YEAR, Integer.parseInt(year));
+                    calendar.set(Calendar.MONTH, Integer.parseInt(month) - 1);
 
-                parent.addView(createMonth(months.get(month), inflater, calendar));
+                    parent.addView(createMonth(months.get(month), inflater, calendar));
+                }
             }
         }
     }
@@ -195,21 +198,17 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
                                     sessionsData.put(sessionMultiName, sessionsData.get(sessionName));
                                     sessionsData.remove(sessionName);
                                     multiDetail.put(sessionName, true);
-                                    sessions.add(sessionMultiName);
+                                    multiDetailAdded.put(sessionName, 1);
                                     sessions.remove(sessionName);
-                                }
-                                if (multiDetailAdded.containsKey(sessionName)) // Next multi session count decrease
-                                {
-                                    multiDetailAdded.put(sessionName, multiDetailAdded.get(sessionName) - 1);
+                                    sessions.add(sessionMultiName);
                                 }
                                 else
                                 {
-                                    multiDetailAdded.put(sessionName, 1);
+                                    multiDetailAdded.put(sessionName, multiDetailAdded.get(sessionName) - 1);
                                 }
 
                                 final String sessionMultiName = sessionName + "-" + multiDetailAdded.get(sessionName);
                                 sessionsData.put(sessionMultiName, data);
-
                                 if (month.equals(lastMonth))
                                 {
                                     sessions.add(sessionMultiName);
@@ -393,7 +392,7 @@ final class SessionsView implements SessionsFolderListener, SessionsLoader
                 detailItems.add(data.getHmin() + " m" + System.lineSeparator() + data.getHmax() + " m");
                 detailItems.add(data.getP() + " sec");
                 detailItems.add(String.valueOf(Util.getDirection(data.getHdir())));
-                detailItems.add(String.valueOf(Util.getDirection(data.getVdir())) + "_" + data.getBft() + " bft");
+                detailItems.add(Util.getDirection(data.getVdir()) + "_" + data.getBft() + " bft");
                 detailItems.add(data.getS());
                 detailItems.add(data.getVp());
 

@@ -63,10 +63,7 @@ final class CalendarAdapter extends BaseAdapter
      * @param sessionsFolder The sessions folder.
      * @param detailProvider The detail provider.
      */
-    CalendarAdapter(Context context,
-                    Calendar monthCalendar,
-                    String sessionsFolder,
-                    InfoProvider detailProvider)
+    CalendarAdapter(Context context, Calendar monthCalendar, String sessionsFolder, InfoProvider detailProvider)
     {
         super();
 
@@ -96,6 +93,7 @@ final class CalendarAdapter extends BaseAdapter
         sessionsName.add(session);
 
         String day = session.substring(session.indexOf('-', session.indexOf('-') + 1) + 1);
+
         if (day.length() < 2) // Ensure day has two chars
         {
             day = "0" + day;
@@ -106,7 +104,7 @@ final class CalendarAdapter extends BaseAdapter
             day = day.substring(0, day.indexOf('-'));
 
             multipleSessionSameDay.computeIfAbsent(day, d -> new ArrayList<>()).add(session);
-            multipleSessionsSameDayCount.put(day, 1);
+            multipleSessionsSameDayCount.put(day, 0);
             sessionsDate.add(session.substring(0, session.lastIndexOf('-')));
         }
         else // Date with two chars
@@ -158,7 +156,7 @@ final class CalendarAdapter extends BaseAdapter
 
         final String sessionDate = monthCalendar.get(Calendar.YEAR) + "-" + getMonth() + "-" + day;
 
-        if (sessionDate.length() > 0 && sessionsName != null && sessionsDate.contains(sessionDate))
+        if (sessionsDate.contains(sessionDate))
         {
             final String session = getSession(day, sessionDate);
             updateSession(view, session, dayView);
@@ -212,18 +210,18 @@ final class CalendarAdapter extends BaseAdapter
         if (multipleSessionSameDay.containsKey(day))
         {
             final List<String> multiDays = multipleSessionSameDay.get(day);
-            final String sessionMultiDay = multiDays.get(multipleSessionsSameDayCount.get(day));
-            final int id;
-            if (multipleSessionsSameDayCount.get(day) > 0)
+            if (multiDays != null)
             {
-                id = multipleSessionsSameDayCount.get(day) - 1;
+                Integer index = Optional.ofNullable(multipleSessionsSameDayCount.get(day)).orElse(0);
+                if (index >= multiDays.size())
+                {
+                    index = 0;
+                }
+                final String sessionMultiDay = multiDays.get(index);
+                final int id = (index + 1) % multiDays.size();
+                multipleSessionsSameDayCount.put(day, id);
+                return sessionMultiDay;
             }
-            else
-            {
-                id = 0;
-            }
-            multipleSessionsSameDayCount.put(day, id);
-            return sessionMultiDay;
         }
         return sessionsName.get(sessionsDate.indexOf(sessionDate));
     }
@@ -311,7 +309,7 @@ final class CalendarAdapter extends BaseAdapter
             setVisible(view, R.id.height5);
         }
     }
-    
+
     private static void setVisible(View view, int r)
     {
         view.findViewById(r).setVisibility(View.VISIBLE);
